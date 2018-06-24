@@ -21,6 +21,17 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <resources>
+            <!--指定xml文件位置-->
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
 
     <dependencies>
@@ -29,7 +40,13 @@
             <artifactId>EducationAdministrativeSystem-model</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>4.1.7.RELEASE</version>
+        </dependency>
     </dependencies>
+
 
 
 </project>

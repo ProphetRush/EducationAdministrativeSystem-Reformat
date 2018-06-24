@@ -8,10 +8,23 @@
         <outputRelativeToContentRoot value="true" />
         <module name="business" />
         <module name="dao" />
+        <module name="EducationAdministrativeSystem-business" />
+        <module name="EducationAdministrativeSystem-dao" />
+        <module name="EducationAdministrativeSystem-model" />
+        <module name="EducationAdministrativeSystem-service" />
+        <module name="EducationAdministrativeSystem-web" />
         <module name="model" />
         <module name="service" />
         <module name="web" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="EducationAdministrativeSystem-business" target="1.5" />
+      <module name="EducationAdministrativeSystem-dao" target="7" />
+      <module name="EducationAdministrativeSystem-model" target="1.5" />
+      <module name="EducationAdministrativeSystem-Reformat" target="1.5" />
+      <module name="EducationAdministrativeSystem-service" target="1.5" />
+      <module name="EducationAdministrativeSystem-web" target="1.7" />
+    </bytecodeTargetLevel>
   </component>
 </project>
