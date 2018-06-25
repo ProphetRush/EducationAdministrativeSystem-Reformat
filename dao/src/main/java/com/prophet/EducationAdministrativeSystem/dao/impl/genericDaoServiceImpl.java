@@ -11,7 +11,7 @@ public class genericDaoServiceImpl implements GenericDaoService {
         return null;
     }
 
-    public <T> List<T> queryLike(T sample, Class<T> clazz) throws DaoServiceException {
+    public <T> List<T> queryLike(T sample) throws DaoServiceException {
         return null;
     }
 

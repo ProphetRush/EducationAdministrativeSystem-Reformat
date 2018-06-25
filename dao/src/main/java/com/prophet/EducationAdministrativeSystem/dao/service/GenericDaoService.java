@@ -19,7 +19,7 @@ public interface GenericDaoService {
      * Query against sample pojo. All not null attributes of the passed in pojo
      * will be used as search criteria.
      **/
-    public <T> List<T> queryLike(T sample, Class<T> clazz) throws DaoServiceException;
+    public <T> List<T> queryLike(T sample) throws DaoServiceException;
 
 
     /**
