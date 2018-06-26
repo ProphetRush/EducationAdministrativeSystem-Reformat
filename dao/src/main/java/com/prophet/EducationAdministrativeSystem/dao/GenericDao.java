@@ -1,17 +1,19 @@
-package com.prophet.EducationAdministrativeSystem.dao.service;
+package com.prophet.EducationAdministrativeSystem.dao;
 
 import com.prophet.EducationAdministrativeSystem.dao.exception.DaoServiceException;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public interface GenericDaoService {
+@Component
+public interface GenericDao {
 
 
     /**
      * Query T by the specified ID
      * The ID must be a number
      **/
-    public <T> T queryByPk(Number id, Class<T> clazz)
+    <T> T queryByPk(Number id, Class<T> clazz)
             throws DaoServiceException;
 
 
@@ -19,19 +21,19 @@ public interface GenericDaoService {
      * Query against sample pojo. All not null attributes of the passed in pojo
      * will be used as search criteria.
      **/
-    public <T> List<T> queryLike(T sample) throws DaoServiceException;
+    <T> List<T> queryLike(T sample) throws DaoServiceException;
 
 
     /**
      * Get the all records count
      */
-    public <T> int count(Class<T> clazz) throws DaoServiceException ;
+    <T> int count(Class<T> clazz) throws DaoServiceException ;
 
 
     /**
      * Get all records from table
      */
-    public <T> List<T> queryAll (Class<T> clazz) throws DaoServiceException;
+    <T> List<T> queryAll (Class<T> clazz) throws DaoServiceException;
 
 
     /**
@@ -42,7 +44,7 @@ public interface GenericDaoService {
      * @return how many rows been affected
      * @throws DaoServiceException
      */
-    public <T> int insert(T daoPojo, Class<T> clazz) throws DaoServiceException;
+    <T> int insert(T daoPojo) throws DaoServiceException;
 
 
     /**
@@ -53,7 +55,7 @@ public interface GenericDaoService {
      *            list of pojos to be inserted
      * @return how many rows been affected
      */
-    public <T> int[] insert(List<T> daoPojos, Class<T> clazz) throws DaoServiceException;
+    <T> int[] insert(List<T> daoPojos) throws DaoServiceException;
 
 
     /**
@@ -63,7 +65,7 @@ public interface GenericDaoService {
      * @return how many rows been affected
      * @throws DaoServiceException
      */
-    public <T> int delete(T daoPojo, Class<T> clazz) throws DaoServiceException;
+    <T> int delete(T daoPojo) throws DaoServiceException;
 
 
 
@@ -74,7 +76,7 @@ public interface GenericDaoService {
      * @return how many rows been affected
      * @throws DaoServiceException
      */
-    public <T> int[] delete(List<T> daoPojos, Class<T> clazz) throws DaoServiceException;
+    <T> int[] delete(List<T> daoPojos) throws DaoServiceException;
 
 
 
@@ -88,7 +90,7 @@ public interface GenericDaoService {
      * @return how many rows been affected
      * @throws DaoServiceException
      */
-    public <T> int update(T daoPojo, Class<T> clazz) throws DaoServiceException;
+    <T> int update(T daoPojo) throws DaoServiceException;
 
 
     /**
@@ -100,7 +102,7 @@ public interface GenericDaoService {
      * @return how many rows been affected
      * @throws DaoServiceException
      */
-    public <T> int[] update(List<T> daoPojos, Class<T> clazz) throws DaoServiceException;
+    <T> int[] update(List<T> daoPojos) throws DaoServiceException;
 
 
 
