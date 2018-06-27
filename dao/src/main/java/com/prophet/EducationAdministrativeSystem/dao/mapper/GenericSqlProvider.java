@@ -72,17 +72,12 @@ public class GenericSqlProvider {
                 SELECT(SQL_ALL_FIELDS);
                 FROM(tableName);
 
-                if (criteriaNames.size() > 0) {
+                if (fieldMap.size() > 0) {
 
-                    for (int i = 0; i < criteriaNames.size()-1; i++) {
-
-                        WHERE(criteriaNames.get(i) + SQL_IS + SQL_ARGS_LEFT_CHAR +
-                                criteriaNames.get(i) + SQL_ARGS_RIGHT_CHAR);
-                        AND();
+                    for (Map.Entry<String, Object> entry: fieldMap.entrySet()) {
+                        WHERE(entry.getKey() + SQL_IS + SQL_ARGS_LEFT_CHAR
+                                + entry.getValue() + SQL_ARGS_RIGHT_CHAR);
                     }
-
-                    WHERE(criteriaNames.get(criteriaNames.size()-1) + SQL_IS + SQL_ARGS_LEFT_CHAR +
-                            criteriaNames.get(criteriaNames.size()-1) + SQL_ARGS_RIGHT_CHAR);
                 }
             }
         }.toString();
@@ -189,21 +184,19 @@ public class GenericSqlProvider {
 
         final List<String> criteriaNames = SqlProviderTools.getCriteriaFieldNames(criteria);
 
+        final Map<String, Object> fieldMap = SqlProviderTools.toDBColumnNameMap(criteriaNames, criteria);
+
         String sql = new SQL() {
             {
                 DELETE_FROM(tableName);
 
-                if (criteriaNames.size() > 0) {
+                if (fieldMap.size() <= 0) {
+                    throw new DaoServiceException("Cannot delete with empty restrictions!");
+                }
 
-                    for (int i = 0; i < criteriaNames.size()-1; i++) {
-
-                        WHERE(criteriaNames.get(i) + SQL_IS + "#{" +
-                                criteriaNames.get(i) + SQL_ARGS_RIGHT_CHAR);
-                        AND();
-                    }
-
-                    WHERE(criteriaNames.get(criteriaNames.size()-1) + SQL_IS + SQL_ARGS_LEFT_CHAR +
-                            criteriaNames.get(criteriaNames.size()-1) + SQL_ARGS_RIGHT_CHAR);
+                for (Map.Entry<String, Object> entry : fieldMap.entrySet()) {
+                    WHERE(entry.getKey() + SQL_IS + SQL_ARGS_LEFT_CHAR
+                            + entry.getValue() + SQL_ARGS_RIGHT_CHAR);
                 }
             }
         }.toString();

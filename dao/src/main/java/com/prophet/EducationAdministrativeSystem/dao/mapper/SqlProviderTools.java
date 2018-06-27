@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -151,7 +152,7 @@ public class SqlProviderTools {
      * @return T object
      * @throws DaoServiceException Exception
      */
-    private static <T> T setObjectFieldValue(T t, String key, Serializable value) throws  DaoServiceException {
+    private static <T> void setObjectFieldValue(T t, String key, Serializable value) throws  DaoServiceException {
 
         try{
 
@@ -159,10 +160,14 @@ public class SqlProviderTools {
 
             if(value.getClass() == Integer.class) {
 
-                method = t.getClass().getMethod(getNomalizeSetterName(key), Long.class);
+                method = t.getClass().getMethod(getNormalizeSetterName(key), Long.class);
                 method.invoke(t, new Long(((Integer) value)));
+            } else if (value.getClass() == BigDecimal.class) {
+
+                method = t.getClass().getMethod(getNormalizeSetterName(key), Double.class);
+                method.invoke(t, ((BigDecimal)value).doubleValue());
             } else {
-                method = t.getClass().getMethod(getNomalizeSetterName(key), value.getClass());
+                method = t.getClass().getMethod(getNormalizeSetterName(key), value.getClass());
                 method.invoke(t, value);
             }
 
@@ -171,8 +176,6 @@ public class SqlProviderTools {
         } catch (Exception e) {
             throw new DaoServiceException("Error when inject with bean!", e);
         }
-
-        return t;
     }
 
 
@@ -182,11 +185,13 @@ public class SqlProviderTools {
      * @param keyName key name
      * @return String name of setter
      */
-    private static String getNomalizeSetterName(String keyName) {
+    private static String getNormalizeSetterName(String keyName) {
 
         if (keyName.length() <= 0) {
             return "";
         }
+
+        keyName = keyName.toLowerCase();
 
         if (keyName.contains("_")) {
 
