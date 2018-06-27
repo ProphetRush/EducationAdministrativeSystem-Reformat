@@ -25,6 +25,12 @@ public interface GenericDao {
 
 
     /**
+     * Query the selected field with a fuzzy mode
+     */
+    <T> List<T> fuzzyQuery(String fuzzyKey, String fieldName, Class<T> clazz) throws DaoServiceException;
+
+
+    /**
      * Get the all records count
      */
     <T> int count(Class<T> clazz) throws DaoServiceException ;
@@ -103,6 +109,7 @@ public interface GenericDao {
      * @throws DaoServiceException
      */
     <T> int[] update(List<T> daoPojos) throws DaoServiceException;
+
 
 
 

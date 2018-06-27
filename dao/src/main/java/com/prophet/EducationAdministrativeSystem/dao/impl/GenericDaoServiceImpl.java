@@ -45,6 +45,24 @@ public class GenericDaoServiceImpl implements GenericDao {
 
 
     /**
+     * Update the given pojo list one by one. By default, if a field of pojo is null value,
+     * that field will be ignored, so that it will not be updated. You can
+     * overwrite this by set updateNullField in hints.
+     *
+     * @param daoPojos list of pojos to be updated
+     * @return how many rows been affected
+     * @throws DaoServiceException
+     */
+    public <T> List<T> fuzzyQuery(String fuzzyKey, String fieldName, Class<T> clazz) throws DaoServiceException {
+
+        List<HashMap<String, Object>> resultMaps = genericMapper.fuzzyQuery(fuzzyKey, fieldName, clazz);
+
+        return SqlProviderTools.toObjectList(resultMaps, clazz);
+    }
+
+
+
+    /**
      * Get the all records count
      */
     public <T> int count(Class<T> clazz) throws DaoServiceException {
@@ -157,7 +175,27 @@ public class GenericDaoServiceImpl implements GenericDao {
 
 
 
+    /**
+     * Update the given pojo list one by one. By default, if a field of pojo is null value,
+     * that field will be ignored, so that it will not be updated. You can
+     * overwrite this by set updateNullField in hints.
+     *
+     * @param daoPojos list of pojos to be updated
+     * @return how many rows been affected
+     * @throws DaoServiceException
+     */
     public <T> int[] update(List<T> daoPojos) throws DaoServiceException {
-        return new int[0];
+
+        if (CollectionUtils.isEmpty(daoPojos)) {
+            throw new DaoServiceException("Cannot delete list which is empty!");
+        }
+
+        int[] result = new int[daoPojos.size()];
+
+        for (int i = 0; i < result.length; i++) {
+            result[i] = genericMapper.delete(daoPojos.get(i));
+        }
+
+        return result;
     }
 }

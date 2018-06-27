@@ -22,6 +22,7 @@ public class GenericSqlProvider {
 
     private static final String SQL_ARGS_RIGHT_CHAR = "}";
 
+    private static final String SQL_LIKE = "like";
 
 
     /**
@@ -237,6 +238,34 @@ public class GenericSqlProvider {
                 WHERE(SqlProviderTools.toDBColumnName(idFieldName) + SQL_IS +
                         SQL_ARGS_LEFT_CHAR + idFieldName + SQL_ARGS_RIGHT_CHAR);
 
+            }
+        }.toString();
+
+        logger.info("SQL EXECUTED: \n" + sql);
+
+        return sql;
+    }
+
+
+    /**
+     * Query the selected field with a fuzzy mode
+     * @param fuzzyKey  fuzzy key
+     * @param fieldName field name
+     * @param clazz class
+     * @param <T>   T
+     * @return  sql
+     */
+    public <T> String fuzzyQuery(final String fuzzyKey, String fieldName, Class<T> clazz) {
+
+        final String tableName = clazz.getAnnotation(TableName.class).value();
+
+        final String columnName = SqlProviderTools.toDBColumnName(fieldName);
+
+        String sql = new SQL() {
+            {
+                SELECT(SQL_ALL_FIELDS);
+                FROM(tableName);
+                WHERE(columnName + " like " + "'%" + fuzzyKey + "%'");
             }
         }.toString();
 

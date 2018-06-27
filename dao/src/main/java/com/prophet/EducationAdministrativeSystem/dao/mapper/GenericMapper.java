@@ -26,6 +26,9 @@ public interface GenericMapper {
     @SelectProvider(type = GenericSqlProvider.class, method = "queryAll")
     <T> List<HashMap<String, Object>> queryAll (Class<T> clazz) throws DaoServiceException;
 
+    @SelectProvider(type = GenericSqlProvider.class, method = "fuzzyQuery")
+    <T> List<HashMap<String, Object>> fuzzyQuery(String fuzzyKey, String fieldName, Class<T> clazz) throws DaoServiceException;
+
 
     @InsertProvider(type = GenericSqlProvider.class, method = "insert")
     @Options(useGeneratedKeys=true)
