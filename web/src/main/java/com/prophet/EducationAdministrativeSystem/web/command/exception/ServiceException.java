@@ -1,6 +1,6 @@
 package com.prophet.EducationAdministrativeSystem.web.command.exception;
 
-public abstract class ServiceException extends Exception {
+public class ServiceException extends Exception {
 
     private String remark;
 

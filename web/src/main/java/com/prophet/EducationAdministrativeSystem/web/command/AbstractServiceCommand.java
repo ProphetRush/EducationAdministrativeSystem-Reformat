@@ -64,7 +64,7 @@ public abstract class AbstractServiceCommand<S,T> implements ServiceCommand<S, T
 
     private void verify(S request) throws InvalidRequestException {
 
-        if (request == null) {
+        if (requestValidator == null) {
             return;
         }
 

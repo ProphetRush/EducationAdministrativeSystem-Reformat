@@ -22,7 +22,7 @@ public class ServiceCommandImpl<S, T> extends AbstractServiceCommand<S, T> imple
 
     @Override
     public T execute(S request) {
-        return null;
+        return super.execute(request);
     }
 
 
