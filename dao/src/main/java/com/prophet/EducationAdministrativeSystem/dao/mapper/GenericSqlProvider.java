@@ -2,6 +2,7 @@ package com.prophet.EducationAdministrativeSystem.dao.mapper;
 
 import com.prophet.EducationAdministrativeSystem.dao.exception.DaoServiceException;
 import com.prophet.EducationAdministrativeSystem.model.annotations.TableName;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.jdbc.SQL;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -255,7 +256,7 @@ public class GenericSqlProvider {
      * @param <T>   T
      * @return  sql
      */
-    public <T> String fuzzyQuery(final String fuzzyKey, String fieldName, Class<T> clazz) {
+    public <T> String fuzzyQuery(@Param("fuzzyKey") final String fuzzyKey, String fieldName, Class<T> clazz) {
 
         final String tableName = clazz.getAnnotation(TableName.class).value();
 
@@ -265,7 +266,7 @@ public class GenericSqlProvider {
             {
                 SELECT(SQL_ALL_FIELDS);
                 FROM(tableName);
-                WHERE(columnName + " like " + "'%" + fuzzyKey + "%'");
+                WHERE(columnName + " like concat('%',#{fuzzyKey},'%')");
             }
         }.toString();
 
