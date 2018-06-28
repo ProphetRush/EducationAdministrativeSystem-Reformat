@@ -27,7 +27,7 @@ public interface GenericDao {
     /**
      * Query the selected field with a fuzzy mode
      */
-    <T> List<T> fuzzyQuery(String fuzzyKey, String fieldName, Class<T> clazz) throws DaoServiceException;
+    <T> List<T> fuzzyQuery(String fieldName, T sample) throws DaoServiceException;
 
 
     /**

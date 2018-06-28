@@ -13,6 +13,8 @@ import java.util.List;
 @Component
 public class QueryCourseHandlerImpl implements QueryCourseHandler {
 
+    private static final String FUZZY_FIELD = "title";
+
     @Autowired
     private GenericDao genericDao;
 
@@ -20,6 +22,22 @@ public class QueryCourseHandlerImpl implements QueryCourseHandler {
 
         try {
             return genericDao.queryAll(Course.class);
+        } catch (DaoServiceException e) {
+            throw new QueryServiceException("数据库异常!", e);
+        }
+
+    }
+
+
+    @Override
+    public List<Course> queryCourse(Course sample) throws QueryServiceException {
+
+        if (sample == null) {
+            throw new QueryServiceException("Query restriction cannot be null!");
+        }
+
+        try {
+            return genericDao.fuzzyQuery(FUZZY_FIELD, sample);
         } catch (DaoServiceException e) {
             throw new QueryServiceException("数据库异常!", e);
         }

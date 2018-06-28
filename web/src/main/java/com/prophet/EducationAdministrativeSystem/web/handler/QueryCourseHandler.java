@@ -11,9 +11,10 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @Component
-public class CourseRelatedQueryHandlerImpl implements ServiceRequestHandler<HttpServletRequest, ResponseModel> {
+public class QueryCourseHandler implements ServiceRequestHandler<HttpServletRequest, ResponseModel> {
 
     @Autowired
     CourseRelatedQueryService courseRelatedQueryService;
@@ -21,8 +22,19 @@ public class CourseRelatedQueryHandlerImpl implements ServiceRequestHandler<Http
     @Override
     public ResponseModel process(HttpServletRequest request) throws ServiceException {
 
+        Map<String, String[]> parameterMap = request.getParameterMap();
+
         try {
-            List<Course> courses = courseRelatedQueryService.getAllCourse();
+
+            List<Course> courses;
+
+            if (parameterMap.size() == 0) {
+
+                courses = courseRelatedQueryService.getAllCourse();
+            } else {
+                courses = courseRelatedQueryService.queryCourse(parameterMap);
+            }
+
             return buildResp(courses);
         } catch (QueryServiceException e) {
             throw new ServiceException(e.getMessage(), e.getCause());

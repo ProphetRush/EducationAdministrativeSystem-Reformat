@@ -2,7 +2,6 @@ package com.prophet.EducationAdministrativeSystem.dao.mapper;
 
 import com.prophet.EducationAdministrativeSystem.dao.exception.DaoServiceException;
 import com.prophet.EducationAdministrativeSystem.model.annotations.TableName;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.jdbc.SQL;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -256,17 +255,32 @@ public class GenericSqlProvider {
      * @param <T>   T
      * @return  sql
      */
-    public <T> String fuzzyQuery(@Param("fuzzyKey") final String fuzzyKey, String fieldName, Class<T> clazz) {
+    public <T> String fuzzyQuery(String fieldName, T sample) throws DaoServiceException {
 
-        final String tableName = clazz.getAnnotation(TableName.class).value();
+        final String tableName = sample.getClass().getAnnotation(TableName.class).value();
 
         final String columnName = SqlProviderTools.toDBColumnName(fieldName);
+
+        final List<String> criteriaNames = SqlProviderTools.getCriteriaFieldNames(sample);
+
+        final Map<String, Object> fieldMap = SqlProviderTools.toDBColumnNameMap(criteriaNames, sample);
 
         String sql = new SQL() {
             {
                 SELECT(SQL_ALL_FIELDS);
                 FROM(tableName);
                 WHERE(columnName + " like concat('%',#{fuzzyKey},'%')");
+
+                if (fieldMap.size() > 0) {
+
+                    for (Map.Entry<String, Object> entry: fieldMap.entrySet()) {
+
+                        if (entry.getValue() == fieldName) continue;
+
+                        WHERE(entry.getKey() + SQL_IS + SQL_ARGS_LEFT_CHAR
+                                + entry.getValue() + SQL_ARGS_RIGHT_CHAR);
+                    }
+                }
             }
         }.toString();
 

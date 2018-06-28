@@ -9,5 +9,7 @@ import java.util.List;
 @Component
 public interface QueryCourseHandler {
 
-    List<Course>  getAllCourse() throws QueryServiceException;
+    List<Course>  queryCourse(Course sample) throws QueryServiceException;
+
+    List<Course> getAllCourse() throws QueryServiceException;
 }

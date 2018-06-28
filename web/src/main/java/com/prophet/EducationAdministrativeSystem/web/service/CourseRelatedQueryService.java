@@ -2,9 +2,9 @@ package com.prophet.EducationAdministrativeSystem.web.service;
 
 import com.prophet.EducationAdministrativeSystem.web.command.ServiceCommandImpl;
 import com.prophet.EducationAdministrativeSystem.web.command.service.ServiceCommand;
-import com.prophet.EducationAdministrativeSystem.web.handler.CourseRelatedQueryHandlerImpl;
+import com.prophet.EducationAdministrativeSystem.web.handler.QueryCourseHandler;
 import com.prophet.EducationAdministrativeSystem.web.response.ResponseModel;
-import com.prophet.EducationAdministrativeSystem.web.validator.CourseRelatedQueryValidatorImpl;
+import com.prophet.EducationAdministrativeSystem.web.validator.QueryCourseValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,18 +17,20 @@ import javax.servlet.http.HttpServletRequest;
 public class CourseRelatedQueryService {
 
     @Autowired
-    CourseRelatedQueryHandlerImpl courseRelatedQueryHandler;
+    QueryCourseHandler queryCourseHandler;
 
     @Autowired
-    CourseRelatedQueryValidatorImpl courseRelatedQueryValidator;
+    QueryCourseValidator queryCourseValidator;
 
 
-    @RequestMapping("/getAllCourse")
-    public @ResponseBody String getAllCourse(HttpServletRequest request) {
+    @RequestMapping("/queryCourse")
+    public @ResponseBody String queryCourse(HttpServletRequest request) {
 
         ServiceCommand<HttpServletRequest, ResponseModel> command =
-                new ServiceCommandImpl<>(courseRelatedQueryHandler);
+                new ServiceCommandImpl<>(queryCourseHandler, queryCourseValidator);
 
         return command.execute(request).toJSON();
     }
+
+
 }
