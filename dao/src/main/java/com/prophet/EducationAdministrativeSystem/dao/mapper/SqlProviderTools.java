@@ -287,7 +287,6 @@ public class SqlProviderTools {
             throw new DaoServiceException("Converting inserted field error, ", e);
         }
 
-
         return DBColumnNameMap;
     }
 

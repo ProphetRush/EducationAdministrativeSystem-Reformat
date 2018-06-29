@@ -45,7 +45,7 @@ public class QueryCourseHandler implements ServiceRequestHandler<HttpServletRequ
 
         ResponseModel resp = new ResponseModel();
         resp.setStatus("success");
-        resp.setMessage("查询成功");
+        resp.setMessage("Query Process Success!");
         resp.setData(data);
         return resp;
     }

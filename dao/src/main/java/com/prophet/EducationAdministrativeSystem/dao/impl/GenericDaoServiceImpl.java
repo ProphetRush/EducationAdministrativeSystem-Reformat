@@ -53,11 +53,11 @@ public class GenericDaoServiceImpl implements GenericDao {
      * @return how many rows been affected
      * @throws DaoServiceException
      */
-    public <T> List<T> fuzzyQuery(String fuzzyKey, String fieldName, Class<T> clazz) throws DaoServiceException {
+    public <T> List<T> fuzzyQuery(String fieldName, T sample) throws DaoServiceException {
 
-        List<HashMap<String, Object>> resultMaps = genericMapper.fuzzyQuery(fuzzyKey, fieldName, clazz);
+        List<HashMap<String, Object>> resultMaps = genericMapper.fuzzyQuery(fieldName, sample);
 
-        return SqlProviderTools.toObjectList(resultMaps, clazz);
+        return SqlProviderTools.toObjectList(resultMaps, (Class<T>) sample.getClass());
     }
 
 

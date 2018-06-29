@@ -2,6 +2,7 @@ package com.prophet.EducationAdministrativeSystem.dao.mapper;
 
 import com.prophet.EducationAdministrativeSystem.dao.exception.DaoServiceException;
 import com.prophet.EducationAdministrativeSystem.model.annotations.TableName;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.jdbc.SQL;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -249,13 +250,13 @@ public class GenericSqlProvider {
 
     /**
      * Query the selected field with a fuzzy mode
-     * @param fuzzyKey  fuzzy key
      * @param fieldName field name
-     * @param clazz class
+     * @param sample    sample criteria
      * @param <T>   T
-     * @return  sql
+     * @return  String
+     * @throws DaoServiceException
      */
-    public <T> String fuzzyQuery(String fieldName, T sample) throws DaoServiceException {
+    public <T> String fuzzyQuery(@Param("fieldName") final String fieldName, @Param("sample") T sample) throws DaoServiceException {
 
         final String tableName = sample.getClass().getAnnotation(TableName.class).value();
 
@@ -269,7 +270,7 @@ public class GenericSqlProvider {
             {
                 SELECT(SQL_ALL_FIELDS);
                 FROM(tableName);
-                WHERE(columnName + " like concat('%',#{fuzzyKey},'%')");
+                WHERE(columnName + " like concat('%',#{sample." + fieldName + "},'%')");
 
                 if (fieldMap.size() > 0) {
 
@@ -278,7 +279,7 @@ public class GenericSqlProvider {
                         if (entry.getValue() == fieldName) continue;
 
                         WHERE(entry.getKey() + SQL_IS + SQL_ARGS_LEFT_CHAR
-                                + entry.getValue() + SQL_ARGS_RIGHT_CHAR);
+                                + "sample." + entry.getValue() + SQL_ARGS_RIGHT_CHAR);
                     }
                 }
             }

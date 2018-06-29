@@ -1,5 +1,6 @@
 package com.prophet.EducationAdministrativeSystem.business.impl;
 
+import com.mysql.cj.util.StringUtils;
 import com.prophet.EducationAdministrativeSystem.business.QueryCourseHandler;
 import com.prophet.EducationAdministrativeSystem.business.exception.QueryServiceException;
 import com.prophet.EducationAdministrativeSystem.dao.GenericDao;
@@ -37,7 +38,12 @@ public class QueryCourseHandlerImpl implements QueryCourseHandler {
         }
 
         try {
+
+            if (StringUtils.isNullOrEmpty(sample.getTitle())) {
+                return genericDao.queryLike(sample);
+            }
             return genericDao.fuzzyQuery(FUZZY_FIELD, sample);
+
         } catch (DaoServiceException e) {
             throw new QueryServiceException("数据库异常!", e);
         }

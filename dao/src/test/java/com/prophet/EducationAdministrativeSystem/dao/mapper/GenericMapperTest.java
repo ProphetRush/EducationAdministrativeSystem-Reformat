@@ -95,6 +95,5 @@ public class GenericMapperTest {
     @Test
     public void fuzzyQueryTest() throws Exception {
 
-        List<Course> courses = genericDao.fuzzyQuery("Bio", "title", Course.class);
     }
 }
